@@ -1,8 +1,8 @@
 import pyperclip
 import string
 import tkinter as tk
-from tkinter import messagebox
 from random import randint, choice, shuffle
+from tkinter import messagebox
 
 EMAIL = "your@address.com"
 ACTIVE_BUTTON = "#9bdeac"
@@ -28,7 +28,7 @@ def password_generator():
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def save_data():
     website = website_entry.get()
-    username = website_entry.get()
+    username = username_entry.get()
     password = password_entry.get()
 
     if len(website) < 1 or len(username) < 1 or len(password) < 1:
