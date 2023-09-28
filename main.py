@@ -1,11 +1,29 @@
+import pyperclip
+import string
 import tkinter as tk
 from tkinter import messagebox
+from random import randint, choice, shuffle
 
 EMAIL = "your@address.com"
 ACTIVE_BUTTON = "#9bdeac"
 
-
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
+letters = list(string.ascii_letters)
+numbers = [str(n) for n in range(10)]
+symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
+
+
+def password_generator():
+    random_letters = [choice(letters) for _ in range(randint(8, 10))]
+    random_numbers = [choice(numbers) for _ in range(randint(2, 4))]
+    random_symbols = [choice(symbols) for _ in range(randint(2, 4))]
+    password_list = random_letters + random_numbers + random_symbols
+    shuffle(password_list)
+    password = "".join(password_list)
+    password_entry.delete(0, "end")
+    password_entry.insert(0, password)
+    pyperclip.copy(password)
+
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def save_data():
@@ -53,7 +71,7 @@ password_label = tk.Label(text="Password:")
 password_label.grid(row=3, column=0)
 password_entry = tk.Entry(width=33)
 password_entry.grid(row=3, column=1)
-password_button = tk.Button(text="Generate Password", activebackground=ACTIVE_BUTTON)
+password_button = tk.Button(text="Generate Password", activebackground=ACTIVE_BUTTON, command=password_generator)
 password_button.grid(row=3, column=2)
 
 add_button = tk.Button(text="Add", width=44, command=save_data, activebackground=ACTIVE_BUTTON)
