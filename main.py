@@ -1,3 +1,4 @@
+import json
 import pyperclip
 import string
 import tkinter as tk
@@ -30,17 +31,27 @@ def save_data():
     website = website_entry.get()
     username = username_entry.get()
     password = password_entry.get()
+    new_data = {
+        website: {
+            "username": username,
+            "password": password
+        }
+    }
 
     if len(website) < 1 or len(username) < 1 or len(password) < 1:
         messagebox.showinfo(title="Oops!", message="Please don't leave any fields empty!")
     else:
-        is_ok = messagebox.askokcancel(title=website,
-                                       message=f"These are the details entered: \n"
-                                               f"Email: {username}\nPassword: {password}\n"
-                                               f"Is it ok to save?")
-        if is_ok:
-            with open("data.txt", mode="a") as f:
-                f.write(f"{website} | {username} | {password}\n")
+        try:
+            with open("data.json", mode="r") as data_file:
+                data = json.load(data_file)
+        except FileNotFoundError:
+            with open("data.json", mode="w") as data_file:
+                json.dump(new_data, data_file, indent=4)
+        else:
+            data.update(new_data)
+            with open("data.json", mode="w") as data_file:
+                json.dump(data, data_file, indent=4)
+        finally:
             website_entry.delete(0, "end")
             password_entry.delete(0, "end")
 
