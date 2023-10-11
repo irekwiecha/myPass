@@ -28,7 +28,7 @@ def password_generator():
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def save_data():
-    website = website_entry.get()
+    website = website_entry.get().title()
     username = username_entry.get()
     password = password_entry.get()
     new_data = {
@@ -56,6 +56,22 @@ def save_data():
             password_entry.delete(0, "end")
 
 
+# ---------------------------- SEARCH PASSWORD ------------------------------- #
+def search_pass():
+    website = website_entry.get().title()
+    try:
+        with open("data.json", mode="r") as data_file:
+            data = json.load(data_file)
+    except FileNotFoundError:
+        messagebox.showinfo(title="Error", message="No Data File Found.")
+    else:
+        if website in data:
+            messagebox.showinfo(title=website, message=f"Username: {data[website]['username']}\n"
+                                                       f"Password: {data[website]['password']}")
+        else:
+            messagebox.showinfo(title="Error", message="No details for the {website} exists")
+
+
 # ---------------------------- UI SETUP ------------------------------- #
 window = tk.Tk()
 window.title("MyPass")
@@ -68,9 +84,11 @@ canvas.grid(row=0, column=1)
 
 website_label = tk.Label(text="Website:")
 website_label.grid(row=1, column=0)
-website_entry = tk.Entry(width=52)
-website_entry.grid(row=1, column=1, columnspan=2)
+website_entry = tk.Entry(width=33)
+website_entry.grid(row=1, column=1)
 website_entry.focus()
+search_button = tk.Button(text="Search", width=14, activebackground=ACTIVE_BUTTON, command=search_pass)
+search_button.grid(row=1, column=2)
 
 username_label = tk.Label(text="Email/Username:")
 username_label.grid(row=2, column=0)
